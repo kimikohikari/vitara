@@ -1,0 +1,1254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vitara — Your Personal Supplement Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --cream: #F7F3EE;
+    --warm-white: #FDFAF6;
+    --sage: #7A9E7E;
+    --sage-dark: #5A7D5E;
+    --sage-light: #C4D8C6;
+    --terracotta: #C97B55;
+    --charcoal: #2C2C2C;
+    --mid: #6B6B6B;
+    --light: #A8A8A8;
+    --border: #E4DDD4;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--charcoal);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── NOISE TEXTURE OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.5;
+  }
+
+  /* ── HERO ── */
+  #landing {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+
+  nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 28px 48px;
+    position: relative;
+    z-index: 10;
+  }
+
+  .logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    letter-spacing: -0.5px;
+    color: var(--charcoal);
+  }
+
+  .logo span { color: var(--sage); }
+
+  .nav-tag {
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--mid);
+    background: var(--border);
+    padding: 6px 14px;
+    border-radius: 100px;
+  }
+
+  .hero-wrap {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    align-items: center;
+    padding: 0 48px 80px;
+    position: relative;
+    z-index: 5;
+  }
+
+  .hero-left { padding-right: 60px; }
+
+  .hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--sage-dark);
+    margin-bottom: 28px;
+  }
+
+  .hero-eyebrow::before {
+    content: '';
+    width: 24px; height: 1px;
+    background: var(--sage-dark);
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(42px, 5vw, 62px);
+    line-height: 1.1;
+    letter-spacing: -1px;
+    color: var(--charcoal);
+    margin-bottom: 24px;
+  }
+
+  h1 em {
+    font-style: italic;
+    color: var(--sage-dark);
+  }
+
+  .hero-sub {
+    font-size: 17px;
+    line-height: 1.65;
+    color: var(--mid);
+    margin-bottom: 44px;
+    max-width: 400px;
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--charcoal);
+    color: var(--warm-white);
+    border: none;
+    padding: 18px 36px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    letter-spacing: 0.02em;
+  }
+
+  .btn-primary:hover {
+    background: var(--sage-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 32px rgba(90,125,94,0.25);
+  }
+
+  .btn-primary svg { transition: transform 0.25s; }
+  .btn-primary:hover svg { transform: translateX(4px); }
+
+  .trust-line {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-top: 32px;
+  }
+
+  .trust-pill {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: var(--mid);
+  }
+
+  .trust-pill .dot {
+    width: 6px; height: 6px;
+    background: var(--sage);
+    border-radius: 50%;
+  }
+
+  .hero-right {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .hero-visual {
+    width: 380px;
+    height: 480px;
+    background: linear-gradient(145deg, var(--sage-light) 0%, #E8D5C4 100%);
+    border-radius: 200px 200px 180px 180px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 40px 80px rgba(0,0,0,0.1);
+  }
+
+  .hero-visual::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, transparent 40%, rgba(90,125,94,0.15) 100%);
+  }
+
+  .float-card {
+    position: absolute;
+    background: white;
+    border-radius: 16px;
+    padding: 14px 18px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--charcoal);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    animation: float 3s ease-in-out infinite;
+  }
+
+  .float-card.c1 { left: -40px; top: 80px; animation-delay: 0s; }
+  .float-card.c2 { right: -30px; top: 180px; animation-delay: 1s; }
+  .float-card.c3 { left: -20px; bottom: 100px; animation-delay: 2s; }
+
+  .float-icon {
+    width: 32px; height: 32px;
+    background: var(--sage-light);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+
+  /* ── PILL BOTTLES ILLUSTRATION ── */
+  .bottles {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 12px;
+    padding-bottom: 20px;
+  }
+
+  .bottle {
+    width: 44px;
+    height: 90px;
+    background: white;
+    border-radius: 8px 8px 6px 6px;
+    position: relative;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+  }
+
+  .bottle::before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 24px;
+    height: 14px;
+    background: var(--sage-light);
+    border-radius: 4px 4px 0 0;
+  }
+
+  .bottle:nth-child(2) { height: 110px; background: var(--sage-light); }
+  .bottle:nth-child(3) { height: 80px; }
+  .bottle:nth-child(2)::before { background: var(--sage); }
+
+  /* ── SECTION TRANSITION ── */
+  .section-divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border), transparent);
+    margin: 0 48px;
+  }
+
+  /* ── QUIZ ── */
+  #quiz {
+    display: none;
+    min-height: 100vh;
+    padding: 60px 48px;
+    position: relative;
+    z-index: 5;
+  }
+
+  .quiz-header {
+    text-align: center;
+    margin-bottom: 60px;
+  }
+
+  .quiz-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 36px;
+    margin-bottom: 12px;
+  }
+
+  .quiz-header p {
+    font-size: 16px;
+    color: var(--mid);
+  }
+
+  .progress-wrap {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    max-width: 560px;
+    margin: 0 auto 40px;
+  }
+
+  .progress-bar {
+    flex: 1;
+    height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: var(--sage);
+    border-radius: 2px;
+    transition: width 0.4s ease;
+    width: 0%;
+  }
+
+  .progress-label {
+    font-size: 13px;
+    color: var(--mid);
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  .question-card {
+    max-width: 600px;
+    margin: 0 auto;
+    background: var(--warm-white);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 48px;
+    animation: fadeUp 0.4s ease;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .q-number {
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--sage-dark);
+    margin-bottom: 16px;
+  }
+
+  .q-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 24px;
+    line-height: 1.35;
+    margin-bottom: 8px;
+  }
+
+  .q-sub {
+    font-size: 14px;
+    color: var(--mid);
+    margin-bottom: 32px;
+  }
+
+  .options-grid {
+    display: grid;
+    gap: 12px;
+  }
+
+  .option-btn {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 20px;
+    background: var(--cream);
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    color: var(--charcoal);
+    text-align: left;
+  }
+
+  .option-btn:hover {
+    border-color: var(--sage);
+    background: rgba(122,158,126,0.06);
+  }
+
+  .option-btn.selected {
+    border-color: var(--sage-dark);
+    background: rgba(90,125,94,0.08);
+    color: var(--sage-dark);
+    font-weight: 500;
+  }
+
+  .option-icon {
+    font-size: 20px;
+    width: 36px;
+    flex-shrink: 0;
+    text-align: center;
+  }
+
+  .quiz-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 32px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .btn-ghost {
+    background: none;
+    border: 1.5px solid var(--border);
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--mid);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .btn-ghost:hover { border-color: var(--charcoal); color: var(--charcoal); }
+
+  .btn-next {
+    background: var(--charcoal);
+    color: white;
+    border: none;
+    padding: 14px 32px;
+    border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.25s;
+    opacity: 0.4;
+    pointer-events: none;
+  }
+
+  .btn-next.active {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  .btn-next.active:hover {
+    background: var(--sage-dark);
+    transform: translateY(-1px);
+  }
+
+  /* ── DISCLAIMER ── */
+  #disclaimer {
+    display: none;
+    min-height: 100vh;
+    padding: 80px 48px;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    z-index: 5;
+  }
+
+  .disclaimer-card {
+    max-width: 560px;
+    background: var(--warm-white);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 56px;
+    text-align: center;
+    animation: fadeUp 0.4s ease;
+  }
+
+  .disclaimer-icon {
+    width: 64px; height: 64px;
+    background: #FFF4E8;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    margin: 0 auto 28px;
+  }
+
+  .disclaimer-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px;
+    margin-bottom: 16px;
+  }
+
+  .disclaimer-card p {
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--mid);
+    margin-bottom: 36px;
+  }
+
+  .disclaimer-card p strong { color: var(--charcoal); }
+
+  /* ── RESULTS ── */
+  #results {
+    display: none;
+    padding: 60px 48px 100px;
+    position: relative;
+    z-index: 5;
+  }
+
+  .results-header {
+    text-align: center;
+    margin-bottom: 60px;
+  }
+
+  .results-header .eyebrow {
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--sage-dark);
+    margin-bottom: 16px;
+  }
+
+  .results-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 42px;
+    line-height: 1.1;
+    margin-bottom: 12px;
+  }
+
+  .results-header p {
+    font-size: 16px;
+    color: var(--mid);
+    max-width: 480px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  .summary-bar {
+    max-width: 760px;
+    margin: 0 auto 48px;
+    background: rgba(122,158,126,0.1);
+    border: 1px solid var(--sage-light);
+    border-radius: 12px;
+    padding: 18px 24px;
+    font-size: 14px;
+    color: var(--sage-dark);
+    font-weight: 500;
+    animation: fadeUp 0.4s ease;
+  }
+
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    max-width: 900px;
+    margin: 0 auto 60px;
+  }
+
+  .product-card {
+    background: var(--warm-white);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 32px 28px;
+    position: relative;
+    overflow: hidden;
+    animation: fadeUp 0.4s ease;
+    transition: transform 0.25s, box-shadow 0.25s;
+  }
+
+  .product-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 48px rgba(0,0,0,0.08);
+  }
+
+  .product-card.featured { border-color: var(--sage); }
+
+  .featured-tag {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: var(--sage);
+    color: white;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 100px;
+  }
+
+  .product-emoji {
+    font-size: 36px;
+    margin-bottom: 20px;
+    display: block;
+  }
+
+  .product-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    margin-bottom: 6px;
+  }
+
+  .product-latin {
+    font-size: 12px;
+    color: var(--light);
+    letter-spacing: 0.05em;
+    margin-bottom: 16px;
+  }
+
+  .product-reason {
+    font-size: 14px;
+    line-height: 1.65;
+    color: var(--mid);
+    margin-bottom: 24px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .product-reason strong { color: var(--charcoal); }
+
+  .product-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .product-price {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--charcoal);
+  }
+
+  .product-price span {
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--light);
+  }
+
+  .btn-buy {
+    background: var(--sage-dark);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .btn-buy:hover {
+    background: var(--charcoal);
+    transform: translateY(-1px);
+  }
+
+  /* ── EMAIL CAPTURE ── */
+  .email-capture {
+    max-width: 560px;
+    margin: 0 auto;
+    background: var(--charcoal);
+    border-radius: 24px;
+    padding: 48px;
+    text-align: center;
+    animation: fadeUp 0.5s ease;
+  }
+
+  .email-capture h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    color: white;
+    margin-bottom: 12px;
+  }
+
+  .email-capture p {
+    font-size: 15px;
+    color: rgba(255,255,255,0.6);
+    margin-bottom: 32px;
+    line-height: 1.6;
+  }
+
+  .email-row {
+    display: flex;
+    gap: 12px;
+  }
+
+  .email-input {
+    flex: 1;
+    padding: 14px 18px;
+    background: rgba(255,255,255,0.1);
+    border: 1.5px solid rgba(255,255,255,0.15);
+    border-radius: 8px;
+    color: white;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    outline: none;
+    transition: border 0.2s;
+  }
+
+  .email-input::placeholder { color: rgba(255,255,255,0.35); }
+  .email-input:focus { border-color: var(--sage-light); }
+
+  .btn-email {
+    background: var(--sage);
+    color: white;
+    border: none;
+    padding: 14px 28px;
+    border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s;
+  }
+
+  .btn-email:hover { background: var(--sage-dark); }
+
+  .success-msg {
+    display: none;
+    text-align: center;
+    padding: 16px;
+    background: rgba(122,158,126,0.15);
+    border: 1px solid var(--sage-light);
+    border-radius: 8px;
+    color: var(--sage-light);
+    font-size: 14px;
+    font-weight: 500;
+    margin-top: 12px;
+  }
+
+  /* ── SMALL DISCLAIMER FOOTER ── */
+  .small-disclaimer {
+    text-align: center;
+    font-size: 12px;
+    color: var(--light);
+    margin-top: 40px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.7;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 860px) {
+    nav { padding: 20px 24px; }
+    .hero-wrap { grid-template-columns: 1fr; padding: 0 24px 60px; }
+    .hero-left { padding-right: 0; text-align: center; }
+    .hero-left .hero-sub { margin-left: auto; margin-right: auto; }
+    .hero-right { display: none; }
+    .trust-line { justify-content: center; }
+    #quiz { padding: 40px 24px; }
+    .question-card { padding: 32px 24px; }
+    #results { padding: 40px 24px 80px; }
+    .products-grid { grid-template-columns: 1fr; }
+    .email-capture { padding: 36px 24px; }
+    .email-row { flex-direction: column; }
+    #disclaimer { padding: 40px 24px; }
+    .disclaimer-card { padding: 36px 24px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════════ LANDING ══════════════ -->
+<section id="landing">
+  <nav>
+    <div class="logo">vita<span>ra</span></div>
+    <div class="nav-tag">Free Assessment</div>
+  </nav>
+
+  <div class="hero-wrap">
+    <div class="hero-left">
+      <div class="hero-eyebrow">Personalized nutrition</div>
+      <h1>Supplements<br>chosen for <em>you,</em><br>not for everyone</h1>
+      <p class="hero-sub">
+        Answer 6 questions about your energy, sleep, and lifestyle — get a curated supplement stack in under 60 seconds.
+      </p>
+      <button class="btn-primary" onclick="startQuiz()">
+        Start free assessment
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M3 8H13M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <div class="trust-line">
+        <div class="trust-pill"><span class="dot"></span> No account needed</div>
+        <div class="trust-pill"><span class="dot"></span> 60 seconds</div>
+        <div class="trust-pill"><span class="dot"></span> Free</div>
+      </div>
+    </div>
+
+    <div class="hero-right">
+      <div class="hero-visual">
+        <div class="bottles">
+          <div class="bottle"></div>
+          <div class="bottle"></div>
+          <div class="bottle"></div>
+        </div>
+      </div>
+      <div class="float-card c1">
+        <div class="float-icon">⚡</div>
+        <div>Energy boost<br><small style="color:var(--mid); font-weight:400">Vitamin B complex</small></div>
+      </div>
+      <div class="float-card c2">
+        <div class="float-icon">🌙</div>
+        <div>Better sleep<br><small style="color:var(--mid); font-weight:400">Magnesium glycinate</small></div>
+      </div>
+      <div class="float-card c3">
+        <div class="float-icon">🧘</div>
+        <div>Less stress<br><small style="color:var(--mid); font-weight:400">Ashwagandha</small></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ QUIZ ══════════════ -->
+<section id="quiz">
+  <div class="quiz-header">
+    <h2>Your Health Assessment</h2>
+    <p>6 quick questions to build your personal protocol</p>
+  </div>
+
+  <div class="progress-wrap">
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="progress-label" id="progressLabel">1 of 6</div>
+  </div>
+
+  <div class="question-card" id="questionCard">
+    <!-- injected by JS -->
+  </div>
+
+  <div class="quiz-nav">
+    <button class="btn-ghost" id="backBtn" onclick="prevQ()" style="visibility:hidden">← Back</button>
+    <button class="btn-next" id="nextBtn" onclick="nextQ()">Continue →</button>
+  </div>
+</section>
+
+<!-- ══════════════ DISCLAIMER ══════════════ -->
+<section id="disclaimer" style="display:none; min-height:100vh; padding:80px 48px; justify-content:center; align-items:center; position:relative; z-index:5;">
+  <div class="disclaimer-card">
+    <div class="disclaimer-icon">⚠️</div>
+    <h3>Before your results</h3>
+    <p>
+      The recommendations below are <strong>for informational purposes only</strong> and do not constitute medical advice. 
+      Supplements are not intended to diagnose, treat, cure, or prevent any disease.<br><br>
+      Please consult your healthcare provider before starting any new supplement, especially if you are pregnant, nursing, or taking medication.
+    </p>
+    <button class="btn-primary" onclick="showResults()" style="width:100%; justify-content:center;">
+      I understand — show my results
+    </button>
+  </div>
+</section>
+
+<!-- ══════════════ RESULTS ══════════════ -->
+<section id="results">
+  <div class="results-header">
+    <div class="eyebrow">Your personalised protocol</div>
+    <h2>We found <em id="matchCount">3</em> supplements<br>for your needs</h2>
+    <p id="resultsSubline">Based on your answers, here's what we recommend and why.</p>
+  </div>
+
+  <div class="summary-bar" id="summaryBar"></div>
+
+  <div class="products-grid" id="productsGrid"></div>
+
+  <div class="email-capture">
+    <h3>Save your protocol</h3>
+    <p>Get your full supplement plan, dosage guide, and a 10% discount on your first order.</p>
+    <div class="email-row">
+      <input type="email" class="email-input" id="emailInput" placeholder="your@email.com">
+      <button class="btn-email" onclick="captureEmail()">Get my plan</button>
+    </div>
+    <div class="success-msg" id="successMsg">
+      ✓ Saved! Check your inbox for your personalized protocol.
+    </div>
+  </div>
+
+  <div class="small-disclaimer">
+    * These statements have not been evaluated by the Food and Drug Administration. 
+    These products are not intended to diagnose, treat, cure, or prevent any disease. 
+    Always consult with a qualified healthcare professional before starting any supplement regimen.
+  </div>
+</section>
+
+<script>
+// ════════════════════════════════════
+//  DATA
+// ════════════════════════════════════
+const questions = [
+  {
+    id: 'energy',
+    text: 'How are your energy levels throughout the day?',
+    sub: 'Think about a typical weekday',
+    options: [
+      { icon: '🔋', label: 'Great — I feel energised all day', value: 'great' },
+      { icon: '📉', label: 'I have an afternoon slump', value: 'slump' },
+      { icon: '😩', label: 'Low energy most of the day', value: 'low' },
+      { icon: '🎢', label: 'Very inconsistent — highs and crashes', value: 'crashes' },
+    ]
+  },
+  {
+    id: 'sleep',
+    text: 'How would you describe your sleep?',
+    sub: 'On average over the last month',
+    options: [
+      { icon: '😴', label: 'I sleep well and wake refreshed', value: 'good' },
+      { icon: '🌙', label: 'I struggle to fall asleep', value: 'fall' },
+      { icon: '⏰', label: 'I wake up during the night', value: 'wake' },
+      { icon: '☀️', label: 'I wake too early and can\'t sleep back', value: 'early' },
+    ]
+  },
+  {
+    id: 'stress',
+    text: 'What\'s your current stress level?',
+    sub: 'Be honest — this helps us find the right adaptogens',
+    options: [
+      { icon: '😊', label: 'Minimal — I feel calm and balanced', value: 'low' },
+      { icon: '😐', label: 'Moderate — some stressful days', value: 'moderate' },
+      { icon: '😤', label: 'High — stressed most of the time', value: 'high' },
+      { icon: '🤯', label: 'Very high — feeling overwhelmed', value: 'extreme' },
+    ]
+  },
+  {
+    id: 'focus',
+    text: 'How is your focus and mental clarity?',
+    sub: 'At work, studying, or daily tasks',
+    options: [
+      { icon: '🎯', label: 'Sharp — I can concentrate for hours', value: 'great' },
+      { icon: '💭', label: 'Occasional brain fog', value: 'fog' },
+      { icon: '📵', label: 'Hard to focus, easily distracted', value: 'poor' },
+      { icon: '⚡', label: 'I need caffeine just to function', value: 'caffeine' },
+    ]
+  },
+  {
+    id: 'diet',
+    text: 'How balanced is your diet?',
+    sub: 'We use this to spot nutritional gaps',
+    options: [
+      { icon: '🥗', label: 'Very balanced — lots of whole foods', value: 'great' },
+      { icon: '🍽️', label: 'Decent, but not very consistent', value: 'ok' },
+      { icon: '🍕', label: 'Often processed or fast food', value: 'poor' },
+      { icon: '🌱', label: 'Plant-based / vegan / vegetarian', value: 'vegan' },
+    ]
+  },
+  {
+    id: 'activity',
+    text: 'How active are you?',
+    sub: 'Average weekly physical activity',
+    options: [
+      { icon: '🏋️', label: 'Very active — training 4+ times/week', value: 'high' },
+      { icon: '🚶', label: 'Moderately active — 2–3x per week', value: 'moderate' },
+      { icon: '🖥️', label: 'Mostly sedentary — desk job', value: 'low' },
+      { icon: '🛋️', label: 'Little to no exercise', value: 'none' },
+    ]
+  }
+];
+
+const supplements = {
+  magnesium: {
+    emoji: '🌙',
+    name: 'Magnesium Glycinate',
+    latin: 'Magnesium bisglycinate chelate',
+    reason: 'Supports <strong>deep sleep</strong> and calms the nervous system. Glycinate form is highly absorbable with minimal digestive side effects.',
+    price: '€24.90',
+    per: '/month',
+    triggers: (a) => a.sleep !== 'good' || a.stress === 'high' || a.stress === 'extreme'
+  },
+  ashwagandha: {
+    emoji: '🌿',
+    name: 'Ashwagandha KSM-66',
+    latin: 'Withania somnifera root extract',
+    reason: 'An adaptogen clinically shown to reduce <strong>cortisol levels</strong> and improve stress resilience. Best-studied extract form.',
+    price: '€22.90',
+    per: '/month',
+    triggers: (a) => a.stress === 'high' || a.stress === 'extreme' || a.stress === 'moderate'
+  },
+  vitaminB: {
+    emoji: '⚡',
+    name: 'Vitamin B Complex',
+    latin: 'B1, B2, B3, B5, B6, B9, B12',
+    reason: 'Directly fuels <strong>energy metabolism</strong> at the cellular level. Essential if you rely on caffeine or eat an unbalanced diet.',
+    price: '€18.90',
+    per: '/month',
+    triggers: (a) => a.energy === 'low' || a.energy === 'slump' || a.focus === 'caffeine' || a.diet === 'poor'
+  },
+  omega3: {
+    emoji: '🐟',
+    name: 'Omega-3 EPA/DHA',
+    latin: 'Fish oil concentrate (IFOS certified)',
+    reason: 'Supports <strong>brain clarity, mood</strong> and cardiovascular health. Especially important for those eating few fatty fish.',
+    price: '€26.90',
+    per: '/month',
+    triggers: (a) => a.focus === 'fog' || a.focus === 'poor' || a.diet === 'poor' || a.diet === 'vegan'
+  },
+  vitaminD3: {
+    emoji: '☀️',
+    name: 'Vitamin D3 + K2',
+    latin: 'Cholecalciferol + menaquinone MK-7',
+    reason: 'Most people in northern latitudes are <strong>deficient in D3</strong>. K2 ensures calcium goes to bones, not arteries.',
+    price: '€16.90',
+    per: '/month',
+    triggers: (a) => a.activity === 'low' || a.activity === 'none' || a.energy === 'low'
+  },
+  rhodiola: {
+    emoji: '🧠',
+    name: 'Rhodiola Rosea',
+    latin: 'Rhodiola rosea root, 3% rosavins',
+    reason: 'Reduces <strong>mental fatigue</strong> and improves cognitive performance under stress. Popular with students and knowledge workers.',
+    price: '€21.90',
+    per: '/month',
+    triggers: (a) => a.focus === 'poor' || a.focus === 'fog' || a.energy === 'crashes' || a.stress === 'high'
+  },
+  creatine: {
+    emoji: '💪',
+    name: 'Creatine Monohydrate',
+    latin: 'Creatine monohydrate, micronised',
+    reason: 'Proven to boost <strong>physical performance</strong> and increasingly shown to enhance working memory and mental energy.',
+    price: '€19.90',
+    per: '/month',
+    triggers: (a) => a.activity === 'high' || a.activity === 'moderate'
+  },
+  ironB12: {
+    emoji: '🌱',
+    name: 'Iron + B12 Complex',
+    latin: 'Ferrous bisglycinate + methylcobalamin',
+    reason: 'Plant-based diets often lack <strong>haem iron and B12</strong>, leading to fatigue and brain fog. This combination corrects both.',
+    price: '€23.90',
+    per: '/month',
+    triggers: (a) => a.diet === 'vegan'
+  }
+};
+
+// ════════════════════════════════════
+//  STATE
+// ════════════════════════════════════
+let currentQ = 0;
+let answers = {};
+let selectedValue = null;
+let sessionId = null;
+
+// ════════════════════════════════════
+//  API HELPERS
+// ════════════════════════════════════
+const API = '/api/v1/quiz';
+
+async function apiPost(path, body) {
+  try {
+    const r = await fetch(API + path, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    });
+    return r.ok ? r.json() : null;
+  } catch (e) {
+    console.warn('API call failed:', path, e);
+    return null;
+  }
+}
+
+// ════════════════════════════════════
+//  QUIZ LOGIC
+// ════════════════════════════════════
+async function startQuiz() {
+  document.getElementById('landing').style.display = 'none';
+  document.getElementById('quiz').style.display = 'block';
+  renderQuestion();
+
+  // Create session on backend
+  const data = await apiPost('/session/start', {});
+  if (data?.session_id) sessionId = data.session_id;
+}
+
+function renderQuestion() {
+  const q = questions[currentQ];
+  selectedValue = answers[q.id] || null;
+
+  const card = document.getElementById('questionCard');
+  card.innerHTML = `
+    <div class="q-number">Question ${currentQ + 1}</div>
+    <div class="q-text">${q.text}</div>
+    <div class="q-sub">${q.sub}</div>
+    <div class="options-grid">
+      ${q.options.map(o => `
+        <button class="option-btn ${answers[q.id] === o.value ? 'selected' : ''}"
+                onclick="selectOption('${o.value}', this)">
+          <span class="option-icon">${o.icon}</span>
+          ${o.label}
+        </button>
+      `).join('')}
+    </div>
+  `;
+
+  // progress
+  const pct = (currentQ / questions.length) * 100;
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressLabel').textContent = `${currentQ + 1} of ${questions.length}`;
+
+  // nav buttons
+  document.getElementById('backBtn').style.visibility = currentQ === 0 ? 'hidden' : 'visible';
+  updateNextBtn();
+}
+
+function selectOption(value, el) {
+  selectedValue = value;
+  document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+  el.classList.add('selected');
+  updateNextBtn();
+}
+
+function updateNextBtn() {
+  const btn = document.getElementById('nextBtn');
+  const hasAnswer = selectedValue !== null || answers[questions[currentQ].id];
+  btn.classList.toggle('active', !!hasAnswer);
+  btn.textContent = currentQ === questions.length - 1 ? 'See my results →' : 'Continue →';
+}
+
+function nextQ() {
+  if (selectedValue) answers[questions[currentQ].id] = selectedValue;
+  if (!answers[questions[currentQ].id]) return;
+
+  selectedValue = null;
+
+  if (currentQ < questions.length - 1) {
+    currentQ++;
+    renderQuestion();
+  } else {
+    showDisclaimer();
+  }
+}
+
+function prevQ() {
+  if (currentQ > 0) {
+    currentQ--;
+    selectedValue = answers[questions[currentQ].id] || null;
+    renderQuestion();
+  }
+}
+
+function showDisclaimer() {
+  document.getElementById('quiz').style.display = 'none';
+  const disc = document.getElementById('disclaimer');
+  disc.style.display = 'flex';
+  disc.style.flexDirection = 'column';
+}
+
+// ════════════════════════════════════
+//  RECOMMENDATIONS ENGINE
+// ════════════════════════════════════
+function getRecommendations() {
+  const scored = Object.entries(supplements)
+    .filter(([, s]) => s.triggers(answers))
+    .slice(0, 3);
+
+  // Always return at least 3, fill with defaults if needed
+  const defaults = ['vitaminD3', 'vitaminB', 'omega3'];
+  const result = [...scored];
+  for (const d of defaults) {
+    if (result.length >= 3) break;
+    if (!result.find(([k]) => k === d)) result.push([d, supplements[d]]);
+  }
+  return result.slice(0, 3);
+}
+
+function buildSummary() {
+  const issues = [];
+  if (answers.energy === 'low' || answers.energy === 'slump') issues.push('low energy');
+  if (answers.sleep !== 'good') issues.push('sleep challenges');
+  if (answers.stress === 'high' || answers.stress === 'extreme') issues.push('high stress');
+  if (answers.focus === 'poor' || answers.focus === 'fog') issues.push('focus issues');
+  if (answers.diet === 'vegan') issues.push('plant-based diet gaps');
+  if (issues.length === 0) issues.push('general wellness optimisation');
+  return `Based on your answers, we identified: ${issues.join(', ')}.`;
+}
+
+function showResults() {
+  document.getElementById('disclaimer').style.display = 'none';
+  document.getElementById('results').style.display = 'block';
+
+  const recs = getRecommendations();
+  document.getElementById('matchCount').textContent = recs.length;
+  document.getElementById('summaryBar').textContent = buildSummary();
+
+  const grid = document.getElementById('productsGrid');
+  grid.innerHTML = recs.map(([key, s], i) => `
+    <div class="product-card ${i === 0 ? 'featured' : ''}" style="animation-delay:${i * 0.1}s">
+      ${i === 0 ? '<div class="featured-tag">Top match</div>' : ''}
+      <span class="product-emoji">${s.emoji}</span>
+      <div class="product-name">${s.name}</div>
+      <div class="product-latin">${s.latin}</div>
+      <div class="product-reason">${s.reason}</div>
+      <div class="product-meta">
+        <div class="product-price">${s.price}<span>${s.per}</span></div>
+        <button class="btn-buy" onclick="trackBuy('${key}')">Add to plan</button>
+      </div>
+    </div>
+  `).join('');
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  // Persist answers + recommendations to backend
+  if (sessionId) {
+    apiPost('/session/submit', { session_id: sessionId, answers }).then(data => {
+      // Backend is canonical; frontend already rendered from local rules
+    });
+  }
+}
+
+function trackBuy(key) {
+  if (sessionId) {
+    apiPost('/analytics/event', {
+      session_id: sessionId,
+      event_type: 'buy_clicked',
+      payload: { supplement: key },
+    });
+  }
+  alert(`In a live version, this opens the checkout for ${supplements[key].name}.\n\nLeave your email below to get your full plan + 10% discount.`);
+}
+
+function captureEmail() {
+  const email = document.getElementById('emailInput').value.trim();
+  if (!email || !email.includes('@')) {
+    document.getElementById('emailInput').style.borderColor = '#e57373';
+    return;
+  }
+  if (sessionId) {
+    apiPost('/lead/capture', { session_id: sessionId, email }).then(data => {
+      if (data?.lead_id) {
+        document.getElementById('successMsg').style.display = 'block';
+        document.getElementById('emailInput').value = '';
+        document.getElementById('emailInput').style.borderColor = '';
+      }
+    });
+  } else {
+    // fallback if session wasn't created (e.g. backend down)
+    document.getElementById('successMsg').style.display = 'block';
+    document.getElementById('emailInput').value = '';
+  }
+}
+</script>
+</body>
+</html>
