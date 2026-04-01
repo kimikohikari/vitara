@@ -17,7 +17,6 @@ vitara/
 Требования: Docker + Docker Compose, свободный порт 80.
 
 ```bash
-git clone <your-repo> && cd vitara
 docker compose up --build
 ```
 
